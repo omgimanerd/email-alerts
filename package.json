@@ -1,0 +1,34 @@
+{
+  "name": "email-alerts",
+  "version": "1.0.0",
+  "description": "A development utility that allows you to send error alerts through email.",
+  "main": "email-alerts.js",
+  "scripts": {
+    "test": "jasmine tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omgimanerd/email-alerts.git"
+  },
+  "keywords": [
+    "npm",
+    "email",
+    "sendgrid",
+    "alerts",
+    "error",
+    "logging"
+  ],
+  "author": {
+    "name": "Alvin Lin",
+    "email": "alvin.lin.dev@gmail.com",
+    "url": "http://omgimanerd.tech"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omgimanerd/email-alerts/issues"
+  },
+  "homepage": "https://github.com/omgimanerd/email-alerts#readme",
+  "dependencies": {
+    "sendgrid": "^4.1.0"
+  }
+}
