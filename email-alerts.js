@@ -10,6 +10,8 @@ module.exports = function(options) {
   var fromEmail = options.fromEmail || 'email-alerts';
   var toEmail = options.toEmail;
   var apiKey = options.apiKey;
+  var subject = options.subject || 'email-alerts error'
+
   if (!toEmail) {
     throw new Error('toEmail not specified!');
   }
@@ -17,7 +19,7 @@ module.exports = function(options) {
     throw new Error('apiKey not specified!');
   }
 
-  var _sendMail = function(subject, content) {
+  var _sendMail = function(content, callback) {
     var helper = sendgrid.mail;
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
@@ -26,22 +28,28 @@ module.exports = function(options) {
       method: 'POST',
       path: '/v3/mail/send',
       body: mail.toJSON()
-    }));
+    }), callback);
   };
 
-  var errorAlertAsync = function(callback) {
-
-  };
-
-  var errorCallback = function(error) {
+  var errorHandler = function(error, callback) {
     if (error) {
-
+      _sendMail(error, callback);
+    } else {
+      callback();
     }
   };
 
+  var errorCallbackWrapper = function(errorCallback) {
+    return function(error) {
+      if (error) {
+        _sendMail(error);
+      }
+      errorCallback(arguments);
+    };
+  };
+
   return {
-    _sendMail: _sendMail,
-    errorAlertAsync: errorAlertAsync,
-    errorCallback: errorCallback
+    errorHandler: errorHandler,
+    errorCallbackWrapper: errorCallbackWrapper
   };
 };

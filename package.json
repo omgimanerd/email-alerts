@@ -30,5 +30,8 @@
   "homepage": "https://github.com/omgimanerd/email-alerts#readme",
   "dependencies": {
     "sendgrid": "^4.1.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.1"
   }
 }
