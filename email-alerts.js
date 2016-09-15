@@ -7,7 +7,7 @@
 var sendgrid = require('sendgrid');
 
 module.exports = function(options) {
-  var fromEmail = options.fromEmail || 'email-alerts';
+  var fromEmail = options.fromEmail || 'alert@email-alerts.com';
   var toEmail = options.toEmail;
   var apiKey = options.apiKey;
   var subject = options.subject || 'email-alerts error'
@@ -20,6 +20,7 @@ module.exports = function(options) {
   }
 
   var _sendMail = function(content, callback) {
+    console.log(fromEmail);
     var helper = sendgrid.mail;
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
@@ -28,7 +29,10 @@ module.exports = function(options) {
       method: 'POST',
       path: '/v3/mail/send',
       body: mail.toJSON()
-    }), callback);
+    }), function(error, response) {
+      console.log(error, response);
+      callback();
+    });
   };
 
   var errorHandler = function(error, callback) {

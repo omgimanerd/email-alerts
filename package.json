@@ -32,6 +32,7 @@
     "sendgrid": "^4.1.0"
   },
   "devDependencies": {
-    "jasmine": "^2.5.1"
+    "expect.js": "^0.3.1",
+    "mocha": "^3.0.2"
   }
 }

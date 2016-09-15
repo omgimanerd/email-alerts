@@ -3,19 +3,21 @@
  * @author alvin.lin.dev@gmail.com (Alvin Lin)
  */
 
-describe('Error throwing if not correctly initialized', function() {
+var expect = require('expect.js');
+
+describe('if not correctly initialized', function() {
   it('should throw an error', function() {
     expect(function() {
       var emailAlerts = require('../email-alerts')({
         apiKey: process.env.SENDGRID_API_KEY
       });
-    }).toThrow();
+    }).to.throwError();
 
     expect(function() {
       var emailAlerts = require('../email-alerts')({
         toEmail: 'blah'
       });
-    }).toThrow();
+    }).to.throwError();
   });
   it('should not throw an error', function() {
     expect(function() {
@@ -23,10 +25,16 @@ describe('Error throwing if not correctly initialized', function() {
         toEmail: 'blah',
         apiKey: process.env.SENDGRID_API_KEY
       });
-    }).not.toThrow();
+    }).to.not.throwError();
   });
 });
 
-describe('Error if not correctly used', function() {
-  it('should ')
+describe('Email sending test', function() {
+  it('should send me an email', function(done) {
+    var emailAlerts = require('../email-alerts')({
+      toEmail: 'alvin.lin.dev@gmail.com',
+      apiKey: process.env.SENDGRID_API_KEY
+    });
+    emailAlerts.errorHandler('error', done);
+  });
 });
