@@ -20,7 +20,6 @@ module.exports = function(options) {
   }
 
   var _sendMail = function(content, callback) {
-    console.log(fromEmail);
     var helper = sendgrid.mail;
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
@@ -29,10 +28,7 @@ module.exports = function(options) {
       method: 'POST',
       path: '/v3/mail/send',
       body: mail.toJSON()
-    }), function(error, response) {
-      console.log(error, response);
-      callback();
-    });
+    }), callback);
   };
 
   var errorHandler = function(error, callback) {
