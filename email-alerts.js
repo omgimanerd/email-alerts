@@ -31,21 +31,25 @@ module.exports = function(options) {
     }), callback);
   };
 
-  var errorHandler = function(error, callback) {
-    if (error) {
-      _sendMail(error, callback);
-    } else {
-      callback();
+  var errorCatcher = function(fn, callback) {
+    try {
+      fn();
+    } catch (error) {
+      _sendMail(error, function() {
+        callback(error);
+      });
     }
   };
 
-  var errorCallbackWrapper = function(errorCallback) {
+  var errorHandler = function(callback) {
     return function(error) {
       if (error) {
         _sendMail(error);
       }
-      errorCallback(arguments);
-    };
+      if (typeof(callback) == 'function') {
+        callback(arguments);
+      }
+    }
   };
 
   return {
