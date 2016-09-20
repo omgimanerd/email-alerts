@@ -1,4 +1,6 @@
 # email-alerts
+[![npm version](https://badge.fury.io/js/email-alerts.svg)](https://badge.fury.io/js/email-alerts)
+
 This plugin is a wrapper around the `sendgrid` npm module that allows for
 urgent alerts to be emailed to you if you want a quick and dirty hack for
 a project. It's super easy to use.
