@@ -48,7 +48,7 @@ module.exports = function(options) {
         alert(subject, error);
       }
       if (typeof(callback) == 'function') {
-        callback(arguments);
+        callback.apply(null, arguments);
       }
     }
   };
