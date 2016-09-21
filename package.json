@@ -1,6 +1,6 @@
 {
   "name": "email-alerts",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A development utility that allows you to send error alerts through email.",
   "main": "email-alerts.js",
   "scripts": {
