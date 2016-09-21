@@ -22,6 +22,11 @@ module.exports = function(options) {
 
   var alert = function(subject, content, callback) {
     var helper = sendgrid.mail;
+    subject = JSON.stringify(subject);
+    content = JSON.stringify(content);
+    if (typeof(callback) != 'function') {
+      throw new Error(callback, 'is not a function!');
+    }
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
                                new helper.Content('text/plain', content));
@@ -44,11 +49,15 @@ module.exports = function(options) {
 
   var errorHandler = function(callback) {
     return function(error) {
+      var args = arguments;
       if (error) {
-        alert(subject, error);
-      }
-      if (typeof(callback) == 'function') {
-        callback.apply(null, arguments);
+        alert(subject, error, function() {
+          if (typeof(callback) == 'function') {
+            callback.apply(null, args);
+          }
+        });
+      } else if (typeof(callback) == 'function') {
+        callback.apply(null, args);
       }
     }
   };

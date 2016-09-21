@@ -40,14 +40,14 @@ It is recommended to store your SendGrid API key in an environment variable
 and pass it using `process.env.SENDGRID_API_KEY`.
 
 
-### emailAlerts.alert(subject, content, [callback])
-Sends an email to with the given subject and content, with an optional callback
+### emailAlerts.alert(subject, content, callback)
+Sends an email to with the given subject and content, with a callback
 to be called when the email is finished being sent.
 
 #### Arguments:
   - `subject`: the subject header of the email. Cannot be falsy.
   - `content`: the body content of the email. Cannot be falsy.
-  - `[callback]`: optional, the function to be called after the email is sent.
+  - `callback`: the function to be called after the email is sent.
   Generally of the form `function(error)`
 
 #### Returns:

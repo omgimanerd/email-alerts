@@ -44,7 +44,7 @@ describe('test the module methods', function() {
     apiKey: process.env.SENDGRID_API_KEY
   });
 
-  describe('test the alert() method', function() {
+  describe('the alert() method', function() {
     it('should send me an email', function(done) {
       var date = new Date();
       var content = 'Unit test run at ' + date;
@@ -55,14 +55,14 @@ describe('test the module methods', function() {
     });
   });
 
-  describe('test the errorHandler() method', function() {
+  describe('the errorHandler() method', function() {
     it('should send me an email', function(done) {
       emailAlerts.errorHandler(function(error, arg1, arg2) {
-        expect(error).to.be(true);
+        expect(error).to.eql({ error: true });
         expect(arg1).to.be('your mom');
         expect(arg2).to.be('your dad');
         done();
-      })(true, 'your mom', 'your dad');
+      })({ error: true }, 'your mom', 'your dad');
     });
 
     it('should not send me an email', function(done) {
