@@ -1,6 +1,7 @@
 /**
- * @fileoverview This is an npm module that allows functions to be wrapped
- * with a handler that will send email alerts on error.
+ * @fileoverview This npm module is a wrapper around the sendgrid module
+ * meant for quick and easy email/alert sending. This functions as a quick
+ * and easy way to set up simple projects.
  * @author alvin.lin.dev@gmail.com (Alvin Lin)
  */
 
@@ -10,7 +11,7 @@ module.exports = function(options) {
   var fromEmail = options.fromEmail || 'alert@email-alerts.com';
   var toEmail = options.toEmail;
   var apiKey = options.apiKey;
-  var subject = options.subject || 'email-alerts error'
+  var subject = options.subject || 'Alert from email-alerts';
 
   if (!toEmail) {
     throw new Error('toEmail not specified!');
@@ -19,7 +20,7 @@ module.exports = function(options) {
     throw new Error('apiKey not specified!');
   }
 
-  var _sendMail = function(content, callback) {
+  var alert = function(subject, content, callback) {
     var helper = sendgrid.mail;
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
@@ -35,7 +36,7 @@ module.exports = function(options) {
     try {
       fn();
     } catch (error) {
-      _sendMail(error, function() {
+      alert(subject, error, function() {
         callback(error);
       });
     }
@@ -44,7 +45,7 @@ module.exports = function(options) {
   var errorHandler = function(callback) {
     return function(error) {
       if (error) {
-        _sendMail(error);
+        alert(subject, error);
       }
       if (typeof(callback) == 'function') {
         callback(arguments);
@@ -53,7 +54,8 @@ module.exports = function(options) {
   };
 
   return {
-    errorHandler: errorHandler,
-    errorCallbackWrapper: errorCallbackWrapper
+    alert: alert,
+    errorCatcher: errorCatcher,
+    errorHandler: errorHandler
   };
 };

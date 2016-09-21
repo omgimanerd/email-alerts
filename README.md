@@ -1,9 +1,8 @@
 # email-alerts
 [![npm version](https://badge.fury.io/js/email-alerts.svg)](https://badge.fury.io/js/email-alerts)
 
-This plugin is a wrapper around the `sendgrid` npm module that allows for
-urgent alerts to be emailed to you if you want a quick and dirty hack for
-a project. It's super easy to use.
+This npm module is a wrapper around the `sendgrid` module meant for quick and
+easy email/alert sending.
 
 ## Setup
 ```
@@ -20,8 +19,9 @@ Creates an `email-alerts` object.
     - `fromEmail`: optional, allows you to customize the email domain that you
     will receive alerts from if you want to filter the emails.
     - `toEmail`: required, specifies the email that alerts will be sent to.
-    - `apiKey`: required, specifies the [Sendgrid](http://sendgrid.com/) API Key. Obtain one [here](http://sendgrid.com/). (You get 100k emails free).
-    - `subject`: optional, allows you to specify the subject header of the
+    - `apiKey`: required, specifies the [Sendgrid](http://sendgrid.com/) API
+    Key. Obtain one [here](http://sendgrid.com/). (You get 100k emails free).
+    - `subject`: optional, allows you to specify the subject header of any
     alert email.
 
 #### Returns:
@@ -38,6 +38,33 @@ var emailAlerts = require('email-alerts')({
 ```
 It is recommended to store your SendGrid API key in an environment variable
 and pass it using `process.env.SENDGRID_API_KEY`.
+
+
+### emailAlerts.alert(subject, content, [callback])
+Sends an email to with the given subject and content, with an optional callback
+to be called when the email is finished being sent.
+
+#### Arguments:
+  - `subject`: the subject header of the email. Cannot be falsy.
+  - `content`: the body content of the email. Cannot be falsy.
+  - `[callback]`: optional, the function to be called after the email is sent.
+  Generally of the form `function(error)`
+
+#### Returns:
+`undefined`
+
+#### Example Usage:
+```javascript
+emailAlerts.alert('ALERT', 'there was a problem');
+
+emailAlerts.alert('ALERT', 'there was another problem', function(error) {
+  if (error) {
+    console.warn('There was an error sending your email!');
+  } else {
+    console.log('Everything is good!');
+  }
+});
+```
 
 
 ### emailAlerts.errorCatcher(fn, [onError])
@@ -82,7 +109,7 @@ sends an email if there was an error.
 
 #### Arguments:
   - `[callback]`: optional, a callback that will be wrapped by the error
-  handler.
+  handler. Generally of the form `function(error, ...)`.
 
 #### Returns:
 A callback function that can be used as an error callback.

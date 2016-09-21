@@ -1,5 +1,5 @@
 /**
- * @fileoverview This file contains unit tests for this project.
+ * @fileoverview Unit Tests for email-alerts.
  * @author alvin.lin.dev@gmail.com (Alvin Lin)
  */
 
@@ -38,8 +38,8 @@ describe('email sending test', function() {
       toEmail: 'alvin.lin.dev@gmail.com',
       apiKey: process.env.SENDGRID_API_KEY
     });
-    emailAlerts.errorHandler('email-alerts unit test', function(error) {
-      expect(error).to.not.be.ok()
+    emailAlerts.alert('email-alerts unit test', 'test', function(error) {
+      expect(error).to.not.be.ok();
       done();
     });
   });
