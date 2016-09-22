@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/omgimanerd/email-alerts#readme",
   "dependencies": {
+    "deasync": "^0.1.7",
     "sendgrid": "^4.1.0"
   },
   "devDependencies": {

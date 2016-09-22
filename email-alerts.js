@@ -5,12 +5,14 @@
  * @author alvin.lin.dev@gmail.com (Alvin Lin)
  */
 
+var deasync = require('deasync');
 var sendgrid = require('sendgrid');
 
 module.exports = function(options) {
   var fromEmail = options.fromEmail || 'alert@email-alerts.com';
   var toEmail = options.toEmail;
   var apiKey = options.apiKey;
+  var sg = sendgrid(apiKey);
   var subject = options.subject || 'Alert from email-alerts';
 
   if (!toEmail) {
@@ -22,28 +24,43 @@ module.exports = function(options) {
 
   var alert = function(subject, content, callback) {
     var helper = sendgrid.mail;
-    subject = JSON.stringify(subject);
-    content = JSON.stringify(content);
-    if (typeof(callback) != 'function') {
-      throw new Error(callback, 'is not a function!');
-    }
+    subject = JSON.stringify(subject).replace(/^\"|\"$/g, '');
+    content = JSON.stringify(content).replace(/^\"|\"$/g, '');
     var mail = new helper.Mail(new helper.Email(fromEmail), subject,
                                new helper.Email(toEmail),
                                new helper.Content('text/plain', content));
-    sendgrid(apiKey).API(sendgrid(apiKey).emptyRequest({
+    var request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
       body: mail.toJSON()
-    }), callback);
+    });
+    if (typeof(callback) === 'function') {
+      sg.API(request, callback);
+    } else {
+      var done = false;
+      sg.API(request, function(error, results) {
+        if (error) {
+          throw new Error(error);
+        }
+        done = true;
+      });
+      deasync.loopWhile(function() {
+        return !done;
+      });
+    }
   };
 
   var errorCatcher = function(fn, callback) {
     try {
       fn();
     } catch (error) {
-      alert(subject, error, function() {
-        callback(error);
-      });
+      if (typeof(callback) === 'function') {
+        alert(subject, error.message, function() {
+          callback(error);
+        });
+      } else {
+        alert(subject, error.message);
+      }
     }
   };
 
@@ -51,12 +68,14 @@ module.exports = function(options) {
     return function(error) {
       var args = arguments;
       if (error) {
-        alert(subject, error, function() {
-          if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
+          alert(subject, error, function() {
             callback.apply(null, args);
-          }
-        });
-      } else if (typeof(callback) == 'function') {
+          });
+        } else {
+          alert(subject, error);
+        }
+      } else if (typeof(callback) === 'function') {
         callback.apply(null, args);
       }
     }
