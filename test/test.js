@@ -46,23 +46,23 @@ describe('test the module methods', function() {
   });
 
   describe('the alert() method (async)', function() {
-  //   it('should send me an email', function(done) {
-  //     var date = new Date();
-  //     var content = 'Unit test run at ' + date;
-  //     emailAlerts.alert('email-alerts unit test', content, function(error) {
-  //       expect(error).to.not.be.ok();
-  //       done();
-  //     });
-  //   });
-  // });
-  //
-  // describe('the alert() method (sync)', function() {
-  //   it('should send me an email', function() {
-  //     var date = new Date();
-  //     var content = 'Unit test run at ' + date;
-  //     emailAlerts.alert('email-alerts unit test', content);
-  //   });
-  // });
+    it('should send me an email', function(done) {
+      var date = new Date();
+      var content = 'Unit test run at ' + date;
+      emailAlerts.alert('email-alerts unit test', content, function(error) {
+        expect(error).to.not.be.ok();
+        done();
+      });
+    });
+  });
+
+  describe('the alert() method (sync)', function() {
+    it('should send me an email', function() {
+      var date = new Date();
+      var content = 'Unit test run at ' + date;
+      emailAlerts.alert('email-alerts unit test', content);
+    });
+  });
 
   describe('the errorCatcher() method', function() {
     it('should catch thrown errors', function() {
@@ -84,27 +84,27 @@ describe('test the module methods', function() {
     });
   });
 
-  // describe('the errorHandler() method', function() {
-  //   it('should work with a callback function to wrap', function(done) {
-  //     emailAlerts.errorHandler(function(error, arg1, arg2) {
-  //       expect(error).to.be.ok();
-  //       expect(arg1).to.be('your mom');
-  //       expect(arg2).to.be('your dad');
-  //       done();
-  //     })({
-  //       error: true,
-  //       message: 'errorHandler() with callback'
-  //     }, 'your mom', 'your dad');
-  //   });
-  //
-  //   it('should work with no callback function to wrap', function() {
-  //     expect(function() {
-  //       emailAlerts.errorHandler()({
-  //         error: true,
-  //         message: 'errorHandler() without callback'
-  //       });
-  //     }).to.not.throwError();
-  //   });
+  describe('the errorHandler() method', function() {
+    it('should work with a callback function to wrap', function(done) {
+      emailAlerts.errorHandler(function(error, arg1, arg2) {
+        expect(error).to.be.ok();
+        expect(arg1).to.be('your mom');
+        expect(arg2).to.be('your dad');
+        done();
+      })({
+        error: true,
+        message: 'errorHandler() with callback'
+      }, 'your mom', 'your dad');
+    });
+
+    it('should work with no callback function to wrap', function() {
+      expect(function() {
+        emailAlerts.errorHandler()({
+          error: true,
+          message: 'errorHandler() without callback'
+        });
+      }).to.not.throwError();
+    });
 
     it('should not send an email when there is no error', function(done) {
       emailAlerts.errorHandler(function(error, arg1, arg2) {
