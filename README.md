@@ -92,7 +92,7 @@ emailAlerts.errorCatcher(someFn, function(error) {
 // during the execution of someFn.
 
 emailAlerts.errorCatcher(function() {
-  throw new Error('donald trump is running for president!');
+  throw new Error('donald trump is president!');
 }, function(error) {
   console.log(error);
 });
@@ -116,7 +116,7 @@ A callback function that can be used as an error callback.
 
 #### Example Usage:
 ```javascript
-asynchronousFn1(emailAlerts.errorHandler);
+asynchronousFn1(emailAlerts.errorHandler());
 // If asynchronousFn1 passes an error to the errorHandler, then an alert email
 // will be sent containing that error.
 
